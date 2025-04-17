@@ -1,0 +1,25 @@
+discord-server-monitor/
+├── bot.py
+├── .env
+├── requirements.txt
+└── README.md
+
+
+
+
+zimablade-homelab/
+├── README.md
+├── LICENSE
+├── .gitignore
+├── docs/
+│   └── zimablade-setup.md
+├── bots/
+│   └── discord-server-monitor/
+│       ├── bot.py
+│       ├── .env.example
+│       ├── requirements.txt
+│       └── README.md
+├── docker/
+│   └── docker-compose.yml
+├── systemd/
+│   └── discord-bot.service

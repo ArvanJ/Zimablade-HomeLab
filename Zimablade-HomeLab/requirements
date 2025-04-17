@@ -1,0 +1,7 @@
+discord.py==2.3.2
+python-dotenv
+psutil
+
+
+install with:
+    pip install -r requirements.txt

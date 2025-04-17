@@ -1,0 +1,20 @@
+[Unit]
+Description=Discord Server Monitor Bot
+After=network.target
+
+[Service]
+User=YOUR_USERNAME
+WorkingDirectory=/path/to/discord-server-monitor
+ExecStart=/usr/bin/python3 /path/to/discord-server-monitor/bot.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+## Enable it:
+# sudo systemctl daemon-reexec
+# sudo systemctl enable discord-bot
+# sudo systemctl start discord-bot
