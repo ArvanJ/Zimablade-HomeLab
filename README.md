@@ -10,7 +10,7 @@ Arvan Jindam (me 🙋‍♂️), a data science student and homelab enthusiast, 
 ## ⚙️ Hardware & Base System
 
 ### 📦 Device: ZimaBlade (32GB eMMC)
-- **SSD**: 512GB NVMe + 2TB SATA HDD  
+- **SSD**: 32GB eMMC 
 - **RAM**: 16GB DDR4 SODIMM  
 - **Network**: 1GbE LAN
 
