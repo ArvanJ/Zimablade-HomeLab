@@ -47,7 +47,7 @@ EOF
 chmod 600 /etc/fognas-credentials
 
 # 3. Add to /etc/fstab if not present
-grep -q Zima2TB /etc/fstab || echo "//10.0.0.59/Zima2TB /mnt/Zima2TB cifs credentials=/etc/fognas-credentials,uid=fogproject,gid=www-data,file_mode=0777,dir_mode=0777,nounix,noserverino 0 0" >> /etc/fstab
+grep -q Zima2TB /etc/fstab || echo "//<ip-address>/Zima2TB /mnt/Zima2TB cifs credentials=/etc/fognas-credentials,uid=fogproject,gid=www-data,file_mode=0777,dir_mode=0777,nounix,noserverino 0 0" >> /etc/fstab
 
 # 4. Mount NAS
 mount -a
