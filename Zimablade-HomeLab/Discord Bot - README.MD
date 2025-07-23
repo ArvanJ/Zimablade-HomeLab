@@ -29,9 +29,3 @@ python bot.py
 ### ⚡ Final Tip
 - Use `discord_app_commands` if you want fancy `/slash` commands.
 - You can expand with Docker stats, GPU temp, etc.
-
-Want me to:
-- Push this to a GitHub repo for you?
-- Add more buttons like **“Restart container”**, **“Check Netdata alerts”**, etc.?
-
-Just say the word 👇
