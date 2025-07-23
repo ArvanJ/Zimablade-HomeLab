@@ -13,12 +13,12 @@ Created by Arvan Jindam (me 🙋‍♂️), this setup was designed to power lab
 ### 🖥 PXE Server (NodeHaus PXE)
 - **OS**: Ubuntu 24.04  
 - **Hostname**: `pxeserver`  
-- **IP Address**: `10.0.0.91`  
+- **IP Address**: `<ip-address>`  
 - **FOG Version**: 1.5.10.1660  
 - **Drive**: 31GB (boot only)  
 
 ### 🗄️ NAS Storage (Zima2TB on TrueNAS)
-- **IP**: `10.0.0.59`  
+- **IP**: `<ip-address>`  
 - **Mount Path**: `/mnt/Zima2TB`  
 - **Image Path**: `/mnt/Zima2TB/MDTDeploymentService/fogimages`  
 - **Connection**: CIFS via `fstab`
@@ -73,7 +73,7 @@ curl -fsSL https://tailscale.com/install.sh | sh
 sudo tailscale up
 ```
 
-> Access your server at: `http://100.x.x.x/fog/management`
+> Access your server at: `http://<ip-address>/fog/management`
 
 ---
 
@@ -90,9 +90,9 @@ PXE Menu Entry:
 ```cfg
 LABEL linuxmint
     MENU LABEL Boot Linux Mint 22.1 XFCE
-    KERNEL http://10.0.0.91/os/linuxmint/vmlinuz
-    INITRD http://10.0.0.91/os/linuxmint/initrd.lz
-    APPEND boot=casper netboot=http url=http://10.0.0.91/os/linuxmint/files/ locale=en_US.UTF-8 keyboard-setup/layoutcode=us
+    KERNEL http://<ip-address>/os/linuxmint/vmlinuz
+    INITRD http://<ip-address>/os/linuxmint/initrd.lz
+    APPEND boot=casper netboot=http url=http://<ip-address>/os/linuxmint/files/ locale=en_US.UTF-8 keyboard-setup/layoutcode=us
 ```
 
 ---
