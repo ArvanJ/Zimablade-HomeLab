@@ -1,4 +1,4 @@
-# Zimablade Homelab (Multi-Node)
+# Homelab (Multi-Node)
 
 This repository documents a Zimablade-based homelab that started as a CasaOS -> TrueNAS SCALE migration and has grown into a multi-node Docker setup (docker-n1 + docker-n2), with reverse proxying, DNS filtering, home automation, backups, and security monitoring.
 
