@@ -1,0 +1,14 @@
+services:
+  glances:
+    container_name: glances
+    # CRITICAL: Use version 3 explicitly for dashboard compatibility
+    image: nicolargo/glances:3.4.0.3-full
+    restart: unless-stopped
+    pid: host
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      # -w: Web mode
+      # --disable-autodiscover: Prevents crash
+      - GLANCES_OPT=-w --disable-autodiscover

@@ -1,0 +1,12 @@
+origin:
+  url: http://10.0.0.120:8080
+  username: r1jin-adguard
+  password: duzso3-tijzix-wofSid
+
+replicas:
+  - url: http://10.0.0.121:4070
+    username: r1jin-adguard2
+    password: bomruc-Bavbuk-6virgi
+
+cron: "0 6 * * *"
+runOnStart: true

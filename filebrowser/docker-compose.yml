@@ -1,0 +1,16 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    user: "950:950"
+    volumes:
+      - /:/srv
+      - ./filebrowser.db:/database/filebrowser.db
+      - ./settings.json:/config/settings.json
+    ports:
+      - "5080:8080"
+    # ADD THIS COMMAND LINE:
+    command: -d /database/filebrowser.db -c /config/settings.json
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
