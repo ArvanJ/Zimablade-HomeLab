@@ -12,7 +12,6 @@ services:
       - DUPLICATI__WEBSERVICE_PASSWORD=niqrix-5fyrHy-fifnas
     volumes:
       - ./config:/config
-      - /mnt/Seagate2TB/backup:/backups
       # Add specific paths that actually exist instead:
       # - /path/to/actual/data:/source/data:ro
     ports:
