@@ -1,3 +1,9 @@
+<!-- Badges -->
+[![CI](https://github.com/OWNER/REPO/actions/workflows/WORKFLOW_FILE.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/WORKFLOW_FILE.yml)
+[![Release](https://img.shields.io/github/v/release/OWNER/REPO)](https://github.com/OWNER/REPO/releases)
+[![License](https://img.shields.io/github/license/OWNER/REPO)](./LICENSE)
+[![Discord](https://img.shields.io/discord/DISCORD_SERVER_ID?logo=discord)](https://discord.gg/58DrHBFrgU)
+
 # Homelab (Multi-Node)
 
 This repository documents a Zimablade-based homelab that started as a CasaOS -> TrueNAS SCALE migration and has grown into a multi-node Docker setup (docker-n1 + docker-n2), with reverse proxying, DNS filtering, home automation, backups, and security monitoring.
