@@ -1,129 +1,54 @@
-# 🧠 ZimaBlade Homelab Journey: From CasaOS to TrueNAS SCALE
+# 🧠 Zimablade Homelab (Multi-Node)
 
-## 📌 Introduction
-This project documents the full transition and setup process of moving from **CasaOS** to **TrueNAS SCALE** on a **ZimaBlade** as a core homelab server. The setup is focused on achieving a reliable, modular, self-hosted infrastructure using Docker, ZFS, and secure remote access via Tailscale.
+This repository documents a Zimablade-based homelab that started as a CasaOS  TrueNAS SCALE migration and has grown into a multi-node Docker setup (docker-n1 + docker-n2), with reverse proxying, DNS filtering, home automation, backups, and security monitoring. [web:1]
 
-Arvan Jindam (me 🙋‍♂️), a data science student and homelab enthusiast, built this system to learn more about IT infrastructure, self-hosting, and cybersecurity while maximizing the power of a single-board x86 device.
+##  Current architecture
 
----
+### Nodes
+- **docker-n1**: Core services + security (Wazuh), storage-backed apps (Nextcloud), secrets (Vaultwarden), DNS (AdGuard), backups/monitoring. [web:1]
+- **docker-n2**: Edge + UI + automation (Nginx Proxy Manager, Homarr, Home Assistant, n8n), sync/backup utilities, secondary DNS + AdGuard sync. [web:1]
 
-## ⚙️ Hardware & Base System
+### Primary entrypoints
+- Reverse proxy: Nginx Proxy Manager (docker-n2). [web:1]
+- Dashboards: Homarr (docker-n2), Portainer agent on both nodes. [web:1]
+- DNS: AdGuard Home (both nodes) + adguardhome-sync (docker-n2). [web:1]
 
-### 📦 Device: ZimaBlade (32GB eMMC)
-- **SSD**: 32GB eMMC 
-- **RAM**: 16GB DDR4 SODIMM  
-- **Network**: 1GbE LAN
+##  Services by node
 
-### 🧪 Previous OS: CasaOS
-- Lightweight, container-based OS  
-- Great for beginners but limited in power-user flexibility
+### docker-n1
+- Wazuh: manager, indexer, dashboard. [web:1]
+- AdGuard Home. [web:1]
+- Vaultwarden. [web:1]
+- Nextcloud + MariaDB + Redis. [web:1]
+- Duplicati. [web:1]
+- Glances. [web:1]
+- CouchDB. [web:1]
+- Portainer agent. [web:1]
 
-### 🚀 New OS: TrueNAS SCALE
-- Debian-based NAS OS with Docker & KVM support  
-- Full ZFS support  
-- Built-in apps + Portainer + CLI goodness
+### docker-n2
+- Nginx Proxy Manager. [web:1]
+- Home Assistant. [web:1]
+- Homarr. [web:1]
+- n8n. [web:1]
+- Syncthing. [web:1]
+- Speedtest Tracker. [web:1]
+- WebDAV (Obsidian). [web:1]
+- AdGuard Home + adguardhome-sync. [web:1]
+- Crafty Controller. [web:1]
+- Duplicati. [web:1]
+- Glances. [web:1]
+- Portainer agent. [web:1]
+- status-bot. [web:1]
 
----
+##  Storage notes
 
-## 🔄 Migration Process
+The original TrueNAS SCALE setup used pools like `/mnt/ZimaTB` and `/mnt/Zima2TB` with datasets for `media/*` and `services/*`; that structure is still the mental model for how bind mounts are organized (media vs configs vs downloads). [web:1]
 
-### 🧹 Step 1: Clean Wipe
-- Backed up all existing volumes from CasaOS using `rsync` to external SSDs  
-- Formatted internal SSD + HDD during TrueNAS SCALE installation
+##  Repo layout
+- `README.md`: High-level overview (this file). [web:1]
+- `Zimablade-HomeLab/`: Notes + compose examples. [web:1]
 
-### 💿 Step 2: Install TrueNAS SCALE
-- Used Ventoy USB with TrueNAS SCALE ISO  
-- Installed on internal SSD (`/dev/sda`) with `/mnt/ZimaTB` and `/mnt/Zima2TB` as primary pools
-
-### 🔐 Step 3: Secure Access
-- Enabled SSH with key-based login  
-- Installed Tailscale:
-
-```bash
-curl -fsSL https://tailscale.com/install.sh | sh
-sudo tailscale up --authkey <auth_key>
-```
-
-- Allowed remote access to TrueNAS via Tailscale IP
-
-### 📂 Step 4: Shared Storage
-- Created datasets:
-  - `media/Movies`, `media/Photos`, `media/TVShows`
-  - `services/configs`, `services/docker`
-- SMB shares for Mac & Windows access  
-- Time Machine backups for macOS enabled
-
----
-
-## 🐳 Container Setup
-
-### 📦 Base Stack
-Using **Portainer** and `docker-compose`:
-- NetData (monitoring)  
-- Jellyfin (media server)  
-- Immich (photo management)  
-- Vaultwarden (Bitwarden alternative)  
-- Nextcloud (private cloud)  
-- Deluge + Radarr + Sonarr (download stack)
-
-All mapped to `/mnt/ZimaTB/media` or `/mnt/Zima2TB/downloads`
-
-### 🌐 Networking
-- Created custom Docker networks (e.g., `tailscale_net`, `proxy_net`)  
-- All containers routed through **Tailscale** using `--network container:tailscale` or bridge + routing
-
----
-
-## 🧰 Services Dashboard
-Set up **Homepage** dashboard to quickly view:
-- TrueNAS health  
-- Docker containers  
-- Portainer access  
-- Quick launch to Immich, Jellyfin, etc.
-
----
-
-## 🛠️ Troubleshooting & Fixes
-- **Deluge not saving to SMB share** → Fixed with correct UID/GID + bind mount permissions  
-- **Tailscale not routing traffic** → Set up subnet routing + IP forwarding  
-- **Netdata not binding** → Opened port in UFW and set trusted interface
-
----
-
-## 🗂️ Filesystem Overview
-
-```bash
-/mnt/ZimaTB
-├── media
-│   ├── Movies
-│   ├── Photos
-│   ├── TVShows
-├── services
-│   ├── configs
-│   └── docker
-```
-
----
-
-## 🧪 Lessons Learned
-- TrueNAS SCALE is **crazy powerful**, but needs patience  
-- ZFS snapshots are 🔥 for rollback safety  
-- Tailscale is a **gamechanger** for secure remote access  
-- Docker in TrueNAS SCALE is stable, but Portainer makes it 10x better
-
----
-
-## 📚 Next Steps
-- Setup Prometheus + Grafana for long-term metrics  
-- Add GitHub Actions backup trigger  
-- Automate Tailscale re-auth with cron  
-- Run Discord bot for server alerts (work in progress 👀)
-
----
-
-## 🙌 Credits
-- Maintained by: [@ArvanJindam](https://github.com/arvanjindam)  
-- Assistant AI: ChatGPT
-
-> Feel free to fork, star, and contribute!
-
+##  Next steps
+- Add per-node `docker-compose.yml` (sanitized) and/or Portainer stack exports. [web:1]
+- Document DNS strategy (primary/secondary), NPM hostnames, and backup targets. [web:1]
+- Add monitoring/alerting (Prometheus/Grafana or similar). [web:1]
