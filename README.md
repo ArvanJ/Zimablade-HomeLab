@@ -50,5 +50,3 @@ The original TrueNAS SCALE setup used pools like `/mnt/ZimaTB` and `/mnt/Zima2TB
 
 ## Next steps
 - Add per-node docker-compose.yml (sanitized) and/or Portainer stack exports.
-- Document DNS strategy (primary/secondary), NPM hostnames, and backup targets.
-- Add monitoring/alerting (Prometheus/Grafana or similar).
