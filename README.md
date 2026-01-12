@@ -2,7 +2,7 @@
 [![CI](https://github.com/ArvanJ/Zimablade-HomeLab/actions/workflows/WORKFLOW_FILE.yml/badge.svg)](https://github.com/ArvanJ/Zimablade-HomeLab/actions/workflows/WORKFLOW_FILE.yml)
 [![Release](https://img.shields.io/github/v/release/OWNER/REPO)](https://github.com/ArvanJ/Zimablade-HomeLab/releases)
 [![License](https://img.shields.io/github/license/ArvanJ/Zimablade-HomeLab)](./LICENSE)
-[![Discord](https://img.shields.io/discord/DISCORD_SERVER_ID?logo=discord)](https://discord.gg/58DrHBFrgU)
+[![Discord](https://img.shields.io/discord/1320417540530241616?logo=discord)](https://discord.gg/58DrHBFrgU)
 
 # Homelab (Multi-Node)
 
