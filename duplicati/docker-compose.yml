@@ -8,8 +8,8 @@ services:
       - PUID=0
       - PGID=0
       - TZ=America/New_York
-      - SETTINGS_ENCRYPTION_KEY=rzzLNpJJL4YulcLQHBY9xodwzmkV6lJ92HFjY0+ZvgQ=
-      - DUPLICATI__WEBSERVICE_PASSWORD=niqrix-5fyrHy-fifnas
+      - SETTINGS_ENCRYPTION_KEY=********************
+      - DUPLICATI__WEBSERVICE_PASSWORD=***********
     volumes:
       - ./config:/config
       # Add specific paths that actually exist instead:
