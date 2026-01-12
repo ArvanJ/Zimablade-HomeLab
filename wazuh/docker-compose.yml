@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  # --- Node 0 (Master) ---
+  wazuh.indexer-n0:
+    image: wazuh/wazuh-indexer:4.11.0
+    hostname: wazuh.indexer-n0
+    container_name: wazuh.indexer-n0
+    ports:
+      - "9200:9200"
+    environment:
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "network.host=0.0.0.0"
+      - "node.name=wazuh.indexer-n0"
+      - "cluster.name=wazuh-cluster"
+      - "discovery.seed_hosts=wazuh.indexer-n0,wazuh.indexer-n1,wazuh.indexer-n2"
+      - "cluster.initial_master_nodes=wazuh.indexer-n0,wazuh.indexer-n1,wazuh.indexer-n2"
+      - "plugins.security.ssl.http.enabled=true"
+      - "plugins.security.ssl.http.pemkey_filepath=certificates/wazuh.indexer-n0-key.pem"
+      - "plugins.security.ssl.http.pemcert_filepath=certificates/wazuh.indexer-n0.pem"
+      - "plugins.security.ssl.http.pemtrustedcas_filepath=certificates/root-ca.pem"
+      - "plugins.security.ssl.transport.enabled=true"
+      - "plugins.security.ssl.transport.pemkey_filepath=certificates/wazuh.indexer-n0-key.pem"
+      - "plugins.security.ssl.transport.pemcert_filepath=certificates/wazuh.indexer-n0.pem"
+      - "plugins.security.ssl.transport.pemtrustedcas_filepath=certificates/root-ca.pem"
+      - "plugins.security.nodes_dn=CN=wazuh.indexer-n0,OU=Wazuh,O=Wazuh,L=California,C=US;CN=wazuh.indexer-n1,OU=Wazuh,O=Wazuh,L=California,C=US;CN=wazuh.indexer-n2,OU=Wazuh,O=Wazuh,L=California,C=US"
+      - "plugins.security.admin_dn=CN=admin,OU=Wazuh,O=Wazuh,L=California,C=US"
+      - "plugins.security.check_snapshot_restore_write_privileges=true"
+      - "plugins.security.enable_snapshot_restore_privilege=true"
+      - "plugins.security.restapi.roles_enabled=[\"all_access\", \"security_rest_api_access\"]"
+    volumes:
+      - wazuh-indexer-data-n0:/var/lib/wazuh-indexer
+      - ./config/wazuh_indexer_ssl_certs/wazuh.indexer-n0.pem:/usr/share/wazuh-indexer/config/certificates/wazuh.indexer-n0.pem
+      - ./config/wazuh_indexer_ssl_certs/wazuh.indexer-n0-key.pem:/usr/share/wazuh-indexer/config/certificates/wazuh.indexer-n0-key.pem
+      - ./config/wazuh_indexer_ssl_certs/root-ca.pem:/usr/share/wazuh-indexer/config/certificates/root-ca.pem
+      - ./config/wazuh_indexer_ssl_certs/admin.pem:/usr/share/wazuh-indexer/config/certificates/admin.pem
+      - ./config/wazuh_indexer_ssl_certs/admin-key.pem:/usr/share/wazuh-indexer/config/certificates/admin-key.pem
+
+  # --- Node 1 ---
+  wazuh.indexer-n1:
+    image: wazuh/wazuh-indexer:4.11.0
+    hostname: wazuh.indexer-n1
+    container_name: wazuh.indexer-n1
+    environment:
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "network.host=0.0.0.0"
+      - "node.name=wazuh.indexer-n1"
+      - "cluster.name=wazuh-cluster"
+      - "discovery.seed_hosts=wazuh.indexer-n0,wazuh.indexer-n1,wazuh.indexer-n2"
+      - "cluster.initial_master_nodes=wazuh.indexer-n0,wazuh.indexer-n1,wazuh.indexer-n2"
+      - "plugins.security.ssl.http.enabled=true"
+      - "plugins.security.ssl.http.pemkey_filepath=certificates/wazuh.indexer-n1-key.pem"
+      - "plugins.security.ssl.http.pemcert_filepath=certificates/wazuh.indexer-n1.pem"
+      - "plugins.security.ssl.http.pemtrustedcas_filepath=certificates/root-ca.pem"
+      - "plugins.security.ssl.transport.enabled=true"
+      - "plugins.security.ssl.transport.pemkey_filepath=certificates/wazuh.indexer-n1-key.pem"
+      - "plugins.security.ssl.transport.pemcert_filepath=certificates/wazuh.indexer-n1.pem"
+      - "plugins.security.ssl.transport.pemtrustedcas_filepath=certificates/root-ca.pem"
+      - "plugins.security.nodes_dn=CN=wazuh.indexer-n0,OU=Wazuh,O=Wazuh,L=California,C=US;CN=wazuh.indexer-n1,OU=Wazuh,O=Wazuh,L=California,C=US;CN=wazuh.indexer-n2,OU=Wazuh,O=Wazuh,L=California,C=US"
+      - "plugins.security.admin_dn=CN=admin,OU=Wazuh,O=Wazuh,L=California,C=US"
+    volumes:
+      - wazuh-indexer-data-n1:/var/lib/wazuh-indexer
+      - ./config/wazuh_indexer_ssl_certs/wazuh.indexer-n1.pem:/usr/share/wazuh-indexer/config/certificates/wazuh.indexer-n1.pem
+      - ./config/wazuh_indexer_ssl_certs/wazuh.indexer-n1-key.pem:/usr/share/wazuh-indexer/config/certificates/wazuh.indexer-n1-key.pem
+      - ./config/wazuh_indexer_ssl_certs/root-ca.pem:/usr/share/wazuh-indexer/config/certificates/root-ca.pem
+
+  # --- Node 2 ---
+  wazuh.indexer-n2:
+    image: wazuh/wazuh-indexer:4.11.0
+    hostname: wazuh.indexer-n2
+    container_name: wazuh.indexer-n2
+    environment:
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "network.host=0.0.0.0"
+      - "node.name=wazuh.indexer-n2"
+      - "cluster.name=wazuh-cluster"
+      - "discovery.seed_hosts=wazuh.indexer-n0,wazuh.indexer-n1,wazuh.indexer-n2"
+      - "cluster.initial_master_nodes=wazuh.indexer-n0,wazuh.indexer-n1,wazuh.indexer-n2"
+      - "plugins.security.ssl.http.enabled=true"
+      - "plugins.security.ssl.http.pemkey_filepath=certificates/wazuh.indexer-n2-key.pem"
+      - "plugins.security.ssl.http.pemcert_filepath=certificates/wazuh.indexer-n2.pem"
+      - "plugins.security.ssl.http.pemtrustedcas_filepath=certificates/root-ca.pem"
+      - "plugins.security.ssl.transport.enabled=true"
+      - "plugins.security.ssl.transport.pemkey_filepath=certificates/wazuh.indexer-n2-key.pem"
+      - "plugins.security.ssl.transport.pemcert_filepath=certificates/wazuh.indexer-n2.pem"
+      - "plugins.security.ssl.transport.pemtrustedcas_filepath=certificates/root-ca.pem"
+      - "plugins.security.nodes_dn=CN=wazuh.indexer-n0,OU=Wazuh,O=Wazuh,L=California,C=US;CN=wazuh.indexer-n1,OU=Wazuh,O=Wazuh,L=California,C=US;CN=wazuh.indexer-n2,OU=Wazuh,O=Wazuh,L=California,C=US"
+      - "plugins.security.admin_dn=CN=admin,OU=Wazuh,O=Wazuh,L=California,C=US"
+    volumes:
+      - wazuh-indexer-data-n2:/var/lib/wazuh-indexer
+      - ./config/wazuh_indexer_ssl_certs/wazuh.indexer-n2.pem:/usr/share/wazuh-indexer/config/certificates/wazuh.indexer-n2.pem
+      - ./config/wazuh_indexer_ssl_certs/wazuh.indexer-n2-key.pem:/usr/share/wazuh-indexer/config/certificates/wazuh.indexer-n2-key.pem
+      - ./config/wazuh_indexer_ssl_certs/root-ca.pem:/usr/share/wazuh-indexer/config/certificates/root-ca.pem
+
+  # --- Manager & Dashboard ---
+  wazuh.manager:
+    image: wazuh/wazuh-manager:4.11.0
+    hostname: wazuh.manager
+    container_name: wazuh.manager
+    ports:
+      - "1514:1514"
+      - "1515:1515"
+      - "55000:55000"
+    environment:
+      - INDEXER_URL=https://wazuh.indexer-n0:9200
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecretPassword
+    depends_on:
+      - wazuh.indexer-n0
+    volumes:
+      - wazuh-manager-data:/var/ossec/data
+
+  wazuh.dashboard:
+    image: wazuh/wazuh-dashboard:4.11.0
+    hostname: wazuh.dashboard
+    container_name: wazuh.dashboard
+    ports:
+      - "443:5601"
+    environment:
+      - INDEXER_URL=https://wazuh.indexer-n0:9200
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecretPassword
+      - WAZUH_API_URL=https://wazuh.manager:55000
+    depends_on:
+      - wazuh.indexer-n0
+    volumes:
+      - ./config/wazuh_indexer_ssl_certs/wazuh.dashboard.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem
+      - ./config/wazuh_indexer_ssl_certs/wazuh.dashboard-key.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem
+      - ./config/wazuh_indexer_ssl_certs/root-ca.pem:/usr/share/wazuh-dashboard/certs/root-ca.pem
+
+volumes:
+  wazuh-indexer-data-n0:
+  wazuh-indexer-data-n1:
+  wazuh-indexer-data-n2:
+  wazuh-manager-data:

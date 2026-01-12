@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  generator:
+    image: wazuh/wazuh-certs-generator:4.14.1
+    hostname: wazuh-certs-generator
+    volumes:
+      - ./config/wazuh_indexer_ssl_certs:/tmp/certs
+      - ./instances.yml:/tmp/instances.yml
+    environment:
+      - "wazuh_indexer_ssl_certs=/tmp/certs"
+      - "instances=/tmp/instances.yml"

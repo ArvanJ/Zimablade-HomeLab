@@ -1,0 +1,19 @@
+instances:
+  indexer:
+    - name: wazuh-indexer-n0
+      ip:
+        - 10.0.0.59
+    - name: wazuh-indexer-n1
+      ip:
+        - 10.0.0.120
+    - name: wazuh-indexer-n2
+      ip:
+        - 10.0.0.121
+  server:
+    - name: wazuh-manager
+      ip:
+        - 10.0.0.121
+  dashboard:
+    - name: wazuh-dashboard
+      ip:
+        - 10.0.0.121

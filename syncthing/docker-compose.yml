@@ -1,0 +1,20 @@
+services:
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing-server # Names the device in the Web UI
+    environment:
+      - PUID=1000  # Check your user ID with `id -u`
+      - PGID=1000  # Check your group ID with `id -g`
+      - TZ=America/New_York
+    volumes:
+      - ./config:/config
+      # MAP YOUR REAL DATA HERE:
+      - /mnt/truenas/media:/data/media
+      - /mnt/truenas/documents:/data/documents
+    ports:
+      - 8384:8384        # Web UI
+      - 22000:22000/tcp  # Sync traffic
+      - 22000:22000/udp  # Sync traffic
+      - 21027:21027/udp  # Local Discovery (Critical for finding devices)
+    restart: unless-stopped

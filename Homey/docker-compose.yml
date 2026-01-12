@@ -1,0 +1,27 @@
+
+services:
+  homey-shs:
+    image: ghcr.io/athombv/homey-shs:latest
+    container_name: homey-shs
+    restart: unless-stopped
+
+    # Remove host networking so we can map ports
+    # network_mode: host
+    privileged: true
+
+    environment:
+      PORT_SERVER_HTTP: 4859
+      PORT_SERVER_HTTPS: 4860
+      PORT_SERVER_BRIDGE_V1: 4861
+      PORT_SERVER_BRIDGE_V2: 4862
+      # Set this to your host's LAN IP if autodetect is wrong
+      HOMEY_LOCAL_ADDRESS: 10.0.0.121
+
+    ports:
+      - "8080:4859"   # external:internal HTTP
+      - "8443:4860"   # external:internal HTTPS
+      - "4861:4861"   # bridge v1
+      - "4862:4862"   # bridge v2
+
+    volumes:
+      - ~/.homey-shs:/homey/user

@@ -1,0 +1,4 @@
+base-url: "http://10.0.0.121:8086"
+listen-http: ":80"
+allow-unauthenticated: true
+log-level: info

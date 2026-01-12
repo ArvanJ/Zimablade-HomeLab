@@ -1,0 +1,29 @@
+
+services:
+  ntfy:
+    image: binwiederhier/ntfy
+    container_name: ntfy
+    command: serve
+    ports:
+      - "8086:80"
+    volumes:
+      # Mount your custom config file (optional)
+      - ./ntfy/server.yml:/etc/ntfy/server.yml:ro
+      # Data dir for auth, cache, etc. (persists across restarts)
+      - ./ntfy/data:/var/lib/ntfy
+    restart: unless-stopped
+
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_NOTIFICATIONS=shoutrrr
+      - WATCHTOWER_NOTIFICATION_URL=ntfy://10.0.0.121:8086/updates
+      - WATCHTOWER_NOTIFICATIONS_LEVEL=info    # "info" = only update events
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_SCHEDULE=0 0 4 * * *  # daily at 4am
+

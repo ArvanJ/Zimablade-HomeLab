@@ -1,0 +1,63 @@
+services:
+  wazuh.indexer:
+    image: wazuh/wazuh-indexer:4.14.1
+    container_name: wazuh.indexer.n2
+    network_mode: "host"
+    environment:
+      - "OPENSEARCH_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "node.name=wazuh-indexer-n2"
+      - "network.host=0.0.0.0"
+      - "discovery.seed_hosts=10.0.0.59,10.0.0.120,10.0.0.121"
+      - "cluster.initial_master_nodes=wazuh-indexer-n0,wazuh-indexer-n1,wazuh-indexer-n2"
+      - "cluster.name=wazuh-cluster"
+      - "plugins.security.ssl.http.enabled=true"
+      - "plugins.security.ssl.http.pemkey_filepath=certs/wazuh-indexer-n2-key.pem"
+      - "plugins.security.ssl.http.pemcert_filepath=certs/wazuh-indexer-n2.pem"
+      - "plugins.security.ssl.http.pemtrustedcas_filepath=certs/root-ca.pem"
+      - "plugins.security.ssl.transport.enabled=true"
+      - "plugins.security.ssl.transport.pemkey_filepath=certs/wazuh-indexer-n2-key.pem"
+      - "plugins.security.ssl.transport.pemcert_filepath=certs/wazuh-indexer-n2.pem"
+      - "plugins.security.ssl.transport.pemtrustedcas_filepath=certs/root-ca.pem"
+      - "plugins.security.nodes_dn=CN=wazuh-indexer-n0,OU=Wazuh,O=Wazuh,L=California,C=US;CN=wazuh-indexer-n1,OU=Wazuh,O=Wazuh,L=California,C=US;CN=wazuh-indexer-n2,OU=Wazuh,O=Wazuh,L=California,C=US"
+      - "plugins.security.admin_dn=CN=admin,OU=Wazuh,O=Wazuh,L=California,C=US"
+    volumes:
+      - ./config/wazuh_indexer_ssl_certs:/usr/share/wazuh-indexer/config/certs
+      - wazuh-indexer-data:/var/lib/wazuh-indexer
+
+  wazuh.manager:
+    image: wazuh/wazuh-manager:4.14.1
+    container_name: wazuh.manager
+    network_mode: "host"
+    environment:
+      - INDEXER_URL=https://10.0.0.121:9200
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecretPassword
+    depends_on:
+      - wazuh.indexer
+    volumes:
+      - wazuh-manager-data:/var/ossec/data
+      - wazuh-manager-etc:/var/ossec/etc
+      - wazuh-manager-logs:/var/ossec/logs
+
+  wazuh.dashboard:
+    image: wazuh/wazuh-dashboard:4.14.1
+    container_name: wazuh.dashboard
+    network_mode: "host"
+    environment:
+      - INDEXER_URL=https://10.0.0.121:9200
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecretPassword
+      - WAZUH_API_URL=https://10.0.0.121:55000
+      - SERVER_SSL_ENABLED=false
+    depends_on:
+      - wazuh.indexer
+    volumes:
+      - ./config/wazuh_indexer_ssl_certs/wazuh-dashboard.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem
+      - ./config/wazuh_indexer_ssl_certs/wazuh-dashboard-key.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem
+      - ./config/wazuh_indexer_ssl_certs/root-ca.pem:/usr/share/wazuh-dashboard/certs/root-ca.pem
+
+volumes:
+  wazuh-indexer-data:
+  wazuh-manager-data:
+  wazuh-manager-etc:
+  wazuh-manager-logs:

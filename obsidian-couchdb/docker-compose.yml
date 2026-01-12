@@ -1,0 +1,16 @@
+services:
+   couchdb:
+    image: couchdb:3.4
+    container_name: obsidian-couchdb
+    restart: unless-stopped
+    ports:
+      - "5984:5984"
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=supersecurepassword
+      - COUCHDB_SECRET=this_is_a_secret_key
+      - ERL_FLAGS=-setcookie "monster_cookie"
+    volumes:
+      - /var/lib/obsidian-couchdb/data:/opt/couchdb/data
+      - /var/lib/obsidian-couchdb/local.ini:/opt/couchdb/etc/local.ini
+
